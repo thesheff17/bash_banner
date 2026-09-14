@@ -14,10 +14,12 @@ curl command
 ```bash
 cd ~/.ssh/
 curl -O https://raw.githubusercontent.com/thesheff17/bash_banner/refs/heads/main/banner.sh
+chmod +x ./banner.sh
 ```
 
 wget command
 ```bash
 cd ~/.ssh/
 wget https://raw.githubusercontent.com/thesheff17/bash_banner/refs/heads/main/banner.sh
+chmod +x ./banner.sh
 ```
