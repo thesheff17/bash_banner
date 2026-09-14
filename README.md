@@ -13,11 +13,11 @@ source ~/.ssh/banner.sh
 curl command
 ```bash
 cd ~/.ssh/
-curl -O https://github.com.com/thesheff17/bash_banner/banner.sh
+curl -O https://github.com/thesheff17/bash_banner/blob/main/banner.sh
 ```
 
 wget command
 ```bash
 cd ~/.ssh/
-wget https://github.com.com/thesheff17/bash_banner/banner.sh
+wget https://github.com/thesheff17/bash_banner/blob/main/banner.sh
 ```
