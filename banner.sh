@@ -9,9 +9,9 @@ echo "More information can be found here: https://github.com/thesheff17/bash_ban
 echo ""
 
 # show ubuntu version
-FILE="/usr/bin/lsb_release"
+FILE1="/usr/bin/lsb_release"
 # -f checks if the file exists and is a regular file
-if [ -f "$FILE" ]; then
+if [ -f "$FILE1" ]; then
     DESC=$(lsb_release -s -d)
     CODENAME=$(lsb_release -s -c)
     echo "Linux Distro: $DESC code name: $CODENAME"
@@ -28,3 +28,18 @@ echo "/ stats: $ROOTSTAT"
 # load average
 LOADSTATS=$(uptime | awk -F'load average:' '{print $2}' | xargs)
 echo "CPU stats: $LOADSTATS"
+
+# iostat info
+FILE2=/usr/bin/iostat
+if [ -f "$FILE2" ]; then
+    IOSTAT_OUTPUT=$(iostat)
+
+    IOSTAT_INFO1=$(printf "%s\n" "$IOSTAT_OUTPUT" | grep -A 1 "^avg-cpu:")
+
+    DEVICE_HEADER=$(printf "%s\n" "$IOSTAT_OUTPUT" | grep "^Device")
+    NVME_LINE=$(printf "%s\n" "$IOSTAT_OUTPUT" | grep "^nvme0n1")
+    DEVICE_INFO="${DEVICE_HEADER}"$'\n'"${NVME_LINE}"
+
+     echo "$IOSTAT_INFO1"
+     echo "$DEVICE_INFO"
+fi
