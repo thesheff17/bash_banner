@@ -40,6 +40,24 @@ if [ -f "$FILE2" ]; then
     NVME_LINE=$(printf "%s\n" "$IOSTAT_OUTPUT" | grep "^nvme0n1")
     DEVICE_INFO="${DEVICE_HEADER}"$'\n'"${NVME_LINE}"
 
-     echo "$IOSTAT_INFO1"
-     echo "$DEVICE_INFO"
+    echo "iostat stats:"
+    echo "$IOSTAT_INFO1"
+    echo "$DEVICE_INFO"
+fi
+
+# vnstat info
+SERVICE="vnstat"
+if [[ -z $1 ]]; then
+    if [ "$1" == "short" ]; then
+        SKIPNETWORK="yes"
+    else
+        SKIPNETWORK="no"
+fi
+
+if [[ $SKIPNETWORK == "no" ]]; then
+    if systemctl is-active --quiet "$SERVICE"; then
+        echo "Network stats:"
+        vnstat -h
+        vnstat
+    fi
 fi
