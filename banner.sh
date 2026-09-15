@@ -40,7 +40,7 @@ if [ -f "$FILE2" ]; then
     NVME_LINE=$(printf "%s\n" "$IOSTAT_OUTPUT" | grep "^nvme0n1")
     DEVICE_INFO="${DEVICE_HEADER}"$'\n'"${NVME_LINE}"
 
-    echo "iostat stats:"
+    echo "io stats:"
     echo "$IOSTAT_INFO1"
     echo "$DEVICE_INFO"
 fi
