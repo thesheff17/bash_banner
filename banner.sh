@@ -52,6 +52,7 @@ if [[ -z $1 ]]; then
         SKIPNETWORK="yes"
     else
         SKIPNETWORK="no"
+    fi
 fi
 
 if [[ $SKIPNETWORK == "no" ]]; then
