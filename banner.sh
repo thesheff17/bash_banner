@@ -3,12 +3,25 @@
 # clear the screen
 clear
 
-# show quick banner
-echo "This is a custom bash script header to help manage ubuntu linux systems."
-echo "More information can be found here: https://github.com/thesheff17/bash_banner"
-echo ""
+# if short is passed to the script it will skip
+# this banner and the network stats below.
 
-# show ubuntu version
+if [[ -z $1 ]]; then
+    if [ "$1" == "short" ]; then
+        SKIPOUTPUT="yes"
+    else
+        SKIPOUTPUT="no"
+    fi
+fi
+
+# show quick banner 
+if [[ $SKIPOUTPUT == "no" ]]; then
+    echo "This is a custom bash script header to help manage debian/ubuntu systems."
+    echo "More information can be found here: https://github.com/thesheff17/bash_banner"
+    echo ""
+fi
+
+# show version
 FILE1="/usr/bin/lsb_release"
 # -f checks if the file exists and is a regular file
 if [ -f "$FILE1" ]; then
@@ -47,15 +60,8 @@ fi
 
 # vnstat info
 SERVICE="vnstat"
-if [[ -z $1 ]]; then
-    if [ "$1" == "short" ]; then
-        SKIPNETWORK="yes"
-    else
-        SKIPNETWORK="no"
-    fi
-fi
 
-if [[ $SKIPNETWORK == "no" ]]; then
+if [[ $SKIPOUTPUT == "no" ]]; then
     if systemctl is-active --quiet "$SERVICE"; then
         echo "Network stats:"
         vnstat -h

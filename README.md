@@ -1,6 +1,6 @@
 # bash banner
 
-this is a custom bash script that can run every time you load a terminal or ssh into a [ubuntu](https://ubuntu.com/) linux system.
+this is a custom bash script that can run every time you load a terminal or ssh into a ubuntu/debian system.
 
 # install
 
