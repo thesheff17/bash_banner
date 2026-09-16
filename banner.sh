@@ -21,10 +21,15 @@ if [[ $SKIPOUTPUT == "no" ]]; then
     echo ""
 fi
 
+# suppress debian/ubuntu headers
+FILE1="$HOME/.hushlogin"
+if [ ! -f "$FILE1" ]; then
+    touch $FILE1
+fi
+
 # show version
-FILE1="/usr/bin/lsb_release"
-# -f checks if the file exists and is a regular file
-if [ -f "$FILE1" ]; then
+FILE2="/usr/bin/lsb_release"
+if [ -f "$FILE2" ]; then
     DESC=$(lsb_release -s -d)
     CODENAME=$(lsb_release -s -c)
     echo "Linux Distro: $DESC code name: $CODENAME"
@@ -43,8 +48,8 @@ LOADSTATS=$(uptime | awk -F'load average:' '{print $2}' | xargs)
 echo "CPU stats: $LOADSTATS"
 
 # iostat info
-FILE2=/usr/bin/iostat
-if [ -f "$FILE2" ]; then
+FILE3=/usr/bin/iostat
+if [ -f "$FILE3" ]; then
     IOSTAT_OUTPUT=$(iostat)
 
     IOSTAT_INFO1=$(printf "%s\n" "$IOSTAT_OUTPUT" | grep -A 1 "^avg-cpu:")
