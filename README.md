@@ -2,7 +2,14 @@
 
 this is a custom bash script that can run every time you load a terminal or ssh into a ubuntu/debian system.
 
-# install
+## iostat command install
+
+```bash
+sudo apt-get update
+sudo apt-get install sysstat
+```
+
+## install custom banner script
 
 I put `banner.sh` in my `~/.ssh/` directory and then add this to your `~/.bashrc` file: 
 
@@ -10,25 +17,25 @@ I put `banner.sh` in my `~/.ssh/` directory and then add this to your `~/.bashrc
 source ~/.ssh/banner.sh
 ```
 
-curl command
+curl command example:
 ```bash
 cd ~/.ssh/
 curl -O https://raw.githubusercontent.com/thesheff17/bash_banner/refs/heads/main/banner.sh
 chmod +x ./banner.sh
 ```
 
-wget command
+wget command example:
 ```bash
 cd ~/.ssh/
 wget https://raw.githubusercontent.com/thesheff17/bash_banner/refs/heads/main/banner.sh
 chmod +x ./banner.sh
 ```
 
-# Network bandwidth monitoring
+## Network bandwidth monitoring
 
 This is a little bit more of a setup because you want to make sure this does not impact your system you are running this on.  I use a tool called [vnstat](https://github.com/vergoh/vnstat) which hooks into the kernel for minimal impact.
 
-## to install
+### vnstat install
 ```bash
 sudo apt-get update 
 sudo apt-get install -y vnstat
