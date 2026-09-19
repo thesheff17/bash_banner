@@ -41,7 +41,6 @@ echo "Kernel version: $KERNEL_VERSION"
 
 # total cores
 TOTAL_CORES=$(lscpu | grep "^CPU(s):" | awk '{print $2}')
-
 echo "CPU cores: $TOTAL_CORES"
 
 # load average
@@ -56,9 +55,17 @@ echo "/ stats: $ROOTSTAT"
 IP=$(hostname -I | awk '{print $1}')
 echo "ipv4 address: $IP"
 
-# iostat info
-FILE3=/usr/bin/iostat
+# python version
+FILE3=/usr/bin/python3
 if [ -f "$FILE3" ]; then
+    PYTHON_VERSION1=$(/usr/bin/python3 -VV)
+    PYTHON_VERSION2="${PYTHON_VERSION1//Python/}"
+    echo "Python version:$PYTHON_VERSION2"
+fi
+
+# iostat info
+FILE4=/usr/bin/iostat
+if [ -f "$FILE4" ]; then
     IOSTAT_OUTPUT=$(iostat)
 
     IOSTAT_INFO1=$(printf "%s\n" "$IOSTAT_OUTPUT" | grep -A 1 "^avg-cpu:")
@@ -67,7 +74,7 @@ if [ -f "$FILE3" ]; then
     NVME_LINE=$(printf "%s\n" "$IOSTAT_OUTPUT" | grep "^nvme0n1")
     DEVICE_INFO="${DEVICE_HEADER}"$'\n'"${NVME_LINE}"
 
-    echo "io stats:"
+    echo "IO stats:"
     echo "$IOSTAT_INFO1"
     echo "$DEVICE_INFO"
 fi
