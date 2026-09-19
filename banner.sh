@@ -35,6 +35,10 @@ if [ -f "$FILE2" ]; then
     echo "Linux Distro: $DESC code name: $CODENAME"
 fi
 
+# kernel version
+KERNEL_VERSION=$(uname -r)
+echo "Kernel version: $KERNEL_VERSION"
+
 # total cores
 TOTAL_CORES=$(lscpu | grep "^CPU(s):" | awk '{print $2}')
 
