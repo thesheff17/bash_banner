@@ -38,7 +38,7 @@ fi
 # total cores
 TOTAL_CORES=$(lscpu | grep "^CPU(s):" | awk '{print $2}')
 
-echo "CPU Cores: $TOTAL_CORES"
+echo "CPU cores: $TOTAL_CORES"
 
 # load average
 LOADSTATS=$(uptime | awk -F'load average:' '{print $2}' | xargs)
