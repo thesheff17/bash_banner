@@ -35,17 +35,22 @@ if [ -f "$FILE2" ]; then
     echo "Linux Distro: $DESC code name: $CODENAME"
 fi
 
-# show ipv4 address
-IP=$(hostname -I | awk '{print $1}')
-echo "ipv4 address: $IP"
+# total cores
+TOTAL_CORES=$(lscpu | grep "^CPU(s):" | awk '{print $2}')
+
+echo "CPU Cores: $TOTAL_CORES"
+
+# load average
+LOADSTATS=$(uptime | awk -F'load average:' '{print $2}' | xargs)
+echo "CPU stats: $LOADSTATS"
 
 # root partition stats
 ROOTSTAT=$(df -BG / | awk 'NR==2 {print "Used: " $5 ", Free: " $4}')
 echo "/ stats: $ROOTSTAT"
 
-# load average
-LOADSTATS=$(uptime | awk -F'load average:' '{print $2}' | xargs)
-echo "CPU stats: $LOADSTATS"
+# show ipv4 address
+IP=$(hostname -I | awk '{print $1}')
+echo "ipv4 address: $IP"
 
 # iostat info
 FILE3=/usr/bin/iostat
