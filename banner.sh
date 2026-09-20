@@ -27,6 +27,20 @@ if [ ! -f "$FILE1" ]; then
     touch $FILE1
 fi
 
+# There is a list of core packages I expect every debian/ubuntu device to have
+PACKAGES=(
+  build-essential
+  curl
+  git
+  htop
+  python3-venv
+  sysstat
+  ssh
+  tmux
+  vim
+  wget
+)
+
 # show version
 FILE2="/usr/bin/lsb_release"
 if [ -f "$FILE2" ]; then
@@ -58,14 +72,22 @@ echo "ipv4 address: $IP"
 # python version
 FILE3=/usr/bin/python3
 if [ -f "$FILE3" ]; then
-    PYTHON_VERSION1=$(/usr/bin/python3 -VV)
+    PYTHON_VERSION1=$(/usr/bin/python3 -V)
     PYTHON_VERSION2="${PYTHON_VERSION1//Python/}"
     echo "Python version:$PYTHON_VERSION2"
 fi
 
-# iostat info
-FILE4=/usr/bin/iostat
+# gcc version
+FILE4=/usr/bin/gcc
 if [ -f "$FILE4" ]; then
+    GCC_VERSION1=$(gcc --version | head -n 1)
+    GCC_VERSION2="${GCC_VERSION1//gcc/}"
+    echo "gcc version:$GCC_VERSION2"
+fi
+
+# iostat info
+FILE5=/usr/bin/iostat
+if [ -f "$FILE5" ]; then
     IOSTAT_OUTPUT=$(iostat)
 
     IOSTAT_INFO1=$(printf "%s\n" "$IOSTAT_OUTPUT" | grep -A 1 "^avg-cpu:")
@@ -78,6 +100,19 @@ if [ -f "$FILE4" ]; then
     echo "$IOSTAT_INFO1"
     echo "$DEVICE_INFO"
 fi
+
+# If any packages are missing, notify the user
+if [ ${#MISSING[@]} -gt 0 ]; then
+  echo "The following required packages are missing:"
+  echo "  ${MISSING[*]}"
+  echo ""
+  echo "Run the following command to install them:"
+  echo "sudo apt-get update && sudo apt-get install -y ${MISSING[*]}"
+else
+  echo "apt-get check: all required packages are installed."
+fi
+
+echo ""
 
 # vnstat info
 SERVICE="vnstat"
