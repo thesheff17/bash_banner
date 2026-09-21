@@ -27,20 +27,6 @@ if [ ! -f "$FILE1" ]; then
     touch $FILE1
 fi
 
-# There is a list of core packages I expect every debian/ubuntu device to have
-PACKAGES=(
-  build-essential
-  curl
-  git
-  htop
-  python3-venv
-  sysstat
-  ssh
-  tmux
-  vim
-  wget
-)
-
 # show version
 FILE2="/usr/bin/lsb_release"
 if [ -f "$FILE2" ]; then
@@ -101,7 +87,29 @@ if [ -f "$FILE5" ]; then
     echo "$DEVICE_INFO"
 fi
 
-# If any packages are missing, notify the user
+# check to see if any packages are missing
+PACKAGES=(
+  build-essential
+  curl
+  git
+  htop
+  python3-venv
+  sysstat
+  ssh
+  tmux
+  vim
+  wget
+)
+
+MISSING=()
+
+# Check each package using dpkg-query
+for pkg in "${PACKAGES[@]}"; do
+  if ! dpkg-query -W -f='${Status}' "$pkg" 2>/dev/null | grep -q "ok installed"; then
+    MISSING+=("$pkg")
+  fi
+done
+
 if [ ${#MISSING[@]} -gt 0 ]; then
   echo "The following required packages are missing:"
   echo "  ${MISSING[*]}"
