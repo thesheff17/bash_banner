@@ -116,12 +116,25 @@ if [ ${#MISSING[@]} -gt 0 ]; then
   echo ""
   echo "Run the following command to install them:"
   echo "sudo apt-get update && sudo apt-get install -y ${MISSING[*]}"
-else
-  echo "apt-get check: all required packages are installed."
+  echo ""
 fi
 
+# quick to check to see if packages are out of date
+FILE6="/var/lib/update-notifier/updates-available"
+if [ -f "$FILE6" ]; then
+    UPDATES_COUNT=$(grep -i "updates can be applied immediately" "$FILE6" | awk '{print $1}')
 
-echo ""
+    # Fallback: if grep/awk fails to parse a number, set to 0
+    UPDATES_COUNT=${UPDATES_COUNT:-0}
+
+    # 3. Check if updates are greater than 0
+    if [ "$UPDATES_COUNT" -gt 0 ]; then
+        echo "There are $UPDATES_COUNT packages available to install."
+        echo "You should run: sudo apt-get update && sudo apt-get dist-upgrade -y"
+        echo "Reboot if you have a kernel upgrade."
+        echo ""
+    fi
+fi
 
 # vnstat info
 SERVICE="vnstat"
