@@ -120,30 +120,6 @@ else
   echo "apt-get check: all required packages are installed."
 fi
 
-# check if packages are outdated
-UPGRADABLE_PKGS=$(apt list --upgradable 2>/dev/null | grep -v "^Listing")
-
-# Count how many packages are out of date
-if [ -z "$UPGRADABLE_PKGS" ]; then
-  COUNT=0
-else
-  COUNT=$(echo "$UPGRADABLE_PKGS" | wc -l)
-fi
-
-if [ "$COUNT" -eq 0 ]; then
-  echo "Your system is fully up to date."
-else
-  echo "Your system has $COUNT packages out of date."
-  echo "You should run sudo apt-get dist-upgrade -y"
-  echo "If you have a kernel upgrade you should reboot."
-fi
-
-# good output for debugging what is out of date
-# Extract package names (everything before the first slash '/')
-# PKG_NAMES=$(echo "$UPGRADABLE_PKGS" | cut -d'/' -f1 | tr '\n' ' ')
-# echo ""
-# echo "Out-of-date packages:"
-# echo "$UPGRADABLE_PKGS" | awk '{print " - " $1}'
 
 echo ""
 
