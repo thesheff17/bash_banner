@@ -14,6 +14,12 @@ if [[ -z $1 ]]; then
     fi
 fi
 
+# comment out below if you want to disable this script in
+# screen/tmux/vscode
+# if [[ "$TERM_PROGRAM" == "vscode" || "$TERM" =~ ^(screen|tmux) ]]; then
+#	return 0
+# fi
+
 # show quick banner 
 if [[ $SKIPOUTPUT == "no" ]]; then
     echo "This is a custom bash script header to help manage debian/ubuntu systems."

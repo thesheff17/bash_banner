@@ -51,3 +51,14 @@ I have a `short` param you can pass to toggle on/off networking stats if you wan
 ```bash
 source ~/.ssh/banner.sh short
 ```
+
+## I want to disable the output in vscode/tmux/screen terminals.
+
+You can uncomment this code at the top.
+```bash
+# comment out below if you want to disable this script in
+# screen/tmux/vscode
+# if [[ "$TERM_PROGRAM" == "vscode" || "$TERM" =~ ^(screen|tmux) ]]; then
+#	return 0
+# fi
+```
