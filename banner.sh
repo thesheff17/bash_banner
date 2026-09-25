@@ -69,10 +69,8 @@ mem_used_gb=$(awk -v val="$mem_used" 'BEGIN { printf "%.2f", val / 1024 / 1024 }
 mem_available_gb=$(awk -v val="$mem_available" 'BEGIN { printf "%.2f", val / 1024 / 1024 }')
 
 # Output RAM status
-echo "Memory Usage: ${mem_usage_percent}%"
+echo "RAM Usage: ${mem_usage_percent}%" 
 echo "Details: ${mem_used_gb} GiB used / ${mem_available_gb} GiB available (${mem_total_gb} GiB total)"
-
-echo "--------------------------------------------------"
 
 # Handle Swap calculation
 if [[ -z "$swap_total" || "$swap_total" -eq 0 ]]; then
