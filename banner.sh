@@ -47,6 +47,48 @@ echo "CPU cores: $TOTAL_CORES"
 LOADSTATS=$(uptime | awk -F'load average:' '{print $2}' | xargs)
 echo "CPU stats: $LOADSTATS"
 
+# Read Memory and Swap values from /proc/meminfo in KiB
+mem_total=$(awk '/^MemTotal:/ {print $2}' /proc/meminfo)
+mem_available=$(awk '/^MemAvailable:/ {print $2}' /proc/meminfo)
+swap_total=$(awk '/^SwapTotal:/ {print $2}' /proc/meminfo)
+swap_free=$(awk '/^SwapFree:/ {print $2}' /proc/meminfo)
+
+# Validate RAM readings
+if [[ -z "$mem_total" || -z "$mem_available" || "$mem_total" -eq 0 ]]; then
+    echo "Error: Unable to read RAM information from /proc/meminfo." >&2
+    exit 1
+fi
+
+# Calculate RAM usage
+mem_used=$((mem_total - mem_available))
+mem_usage_percent=$(awk -v used="$mem_used" -v total="$mem_total" 'BEGIN { printf "%.2f", (used / total) * 100 }')
+
+# Convert RAM KiB to GiB for display
+mem_total_gb=$(awk -v val="$mem_total" 'BEGIN { printf "%.2f", val / 1024 / 1024 }')
+mem_used_gb=$(awk -v val="$mem_used" 'BEGIN { printf "%.2f", val / 1024 / 1024 }')
+mem_available_gb=$(awk -v val="$mem_available" 'BEGIN { printf "%.2f", val / 1024 / 1024 }')
+
+# Output RAM status
+echo "Memory Usage: ${mem_usage_percent}%"
+echo "Details: ${mem_used_gb} GiB used / ${mem_available_gb} GiB available (${mem_total_gb} GiB total)"
+
+echo "--------------------------------------------------"
+
+# Handle Swap calculation
+if [[ -z "$swap_total" || "$swap_total" -eq 0 ]]; then
+    echo "Swap Usage:   0.00% (No swap configured)"
+else
+    swap_used=$((swap_total - swap_free))
+    swap_usage_percent=$(awk -v used="$swap_used" -v total="$swap_total" 'BEGIN { printf "%.2f", (used / total) * 100 }')
+
+    swap_total_gb=$(awk -v val="$swap_total" 'BEGIN { printf "%.2f", val / 1024 / 1024 }')
+    swap_used_gb=$(awk -v val="$swap_used" 'BEGIN { printf "%.2f", val / 1024 / 1024 }')
+    swap_free_gb=$(awk -v val="$swap_free" 'BEGIN { printf "%.2f", val / 1024 / 1024 }')
+
+    echo "Swap Usage:   ${swap_usage_percent}%"
+    echo "Details: ${swap_used_gb} GiB used / ${swap_free_gb} GiB free (${swap_total_gb} GiB total)"
+fi
+
 # root partition stats
 ROOTSTAT=$(df -BG / | awk 'NR==2 {print "Used: " $5 ", Free: " $4}')
 echo "/ stats: $ROOTSTAT"
